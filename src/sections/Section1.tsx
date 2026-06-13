@@ -1,6 +1,7 @@
 import backgroundImage from '../assets/section1/background.png';
 import frontendImage from '../assets/section1/frontend.png';
 import { getSectionZLayers } from '../constants/zIndex';
+import Section1Chart from './Section1Chart';
 
 const Z = getSectionZLayers();
 import SectionText from '../components/SectionText';
@@ -93,6 +94,7 @@ export default function Section1() {
             className="absolute top-0 left-0 w-full h-full"
             style={{ zIndex: Z.CONTENT }}
           >
+            <Section1Chart />
             {SECTION1_TEXTS.map((item, i) => (
               <SectionText key={i} {...item} />
             ))}

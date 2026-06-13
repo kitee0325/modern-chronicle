@@ -51,6 +51,18 @@ body {
   transform: none;
 }
 
+.d3-chart-layer {
+  transform-box: border-box;
+  transform-origin: center;
+  will-change: opacity, transform;
+}
+
+.d3-chart-svg [data-d3-animate] {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: opacity, transform, stroke-dashoffset;
+}
+
 /* End 结尾页左侧照片纵向循环动画 */
 .end-photo-strip {
   position: absolute;
