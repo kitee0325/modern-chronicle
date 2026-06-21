@@ -1,5 +1,3 @@
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
 import backgroundImage from '../assets/start/background.png';
 import { getSectionZLayers } from '../constants/zIndex';
 import { Z_LAYERS } from '../constants/zIndex';
@@ -41,94 +39,10 @@ const START_TEXTS: SectionTextProps[] = [
 ];
 
 export default function Start() {
-  const rootRef = useRef<HTMLDivElement>(null);
   const { width: designW, height: designH, imgs: birdImgs } = startBirdsConfig;
-
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-
-    const ctx = gsap.context(() => {
-      const birds = gsap.utils.toArray<HTMLElement>(
-        root.querySelectorAll('.start-bird'),
-      );
-      if (birds.length === 0) return;
-
-      gsap.set(birds, {
-        opacity: 0,
-        y: 20,
-        scale: 0.94,
-        transformOrigin: '50% 50%',
-      });
-
-      const enterDur = 1.15;
-      const staggerGap = 0.26;
-      const breathScale = 1.045;
-      const breathInOutDur = 1.35;
-      const breathPulses = 2;
-
-      const tl = gsap.timeline({ paused: true });
-      birds.forEach((bird, i) => {
-        const one = gsap.timeline();
-        one
-          .fromTo(
-            bird,
-            { opacity: 0, y: 22, scale: 0.93 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: enterDur,
-              ease: 'power3.out',
-            },
-          )
-          .to(bird, {
-            scale: breathScale,
-            duration: breathInOutDur,
-            ease: 'sine.inOut',
-            yoyo: true,
-            repeat: breathPulses,
-          });
-        tl.add(one, i * staggerGap);
-      });
-
-      const resetBirds = () => {
-        tl.pause(0);
-        gsap.set(birds, {
-          opacity: 0,
-          y: 20,
-          scale: 0.94,
-        });
-      };
-
-      const playWhenVisible = (visible: boolean) => {
-        if (visible) {
-          tl.restart();
-        } else {
-          resetBirds();
-        }
-      };
-
-      const io = new IntersectionObserver(
-        ([entry]) => {
-          if (!entry) return;
-          playWhenVisible(entry.isIntersecting);
-        },
-        { root: null, threshold: 0.08 },
-      );
-      io.observe(root);
-
-      return () => {
-        io.disconnect();
-      };
-    }, root);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <div
-      ref={rootRef}
       className="relative shrink-0 h-full"
       style={{ width: START_WIDTH, maxWidth: START_WIDTH }}
     >
